@@ -39,19 +39,27 @@ namespace death_counter
 
 		private System.Windows.Forms.Timer topmostTimer;
 
-		public string path = "C:\\Users\\tjank\\OneDrive - Univerza v Mariboru\\git_repos\\testtest123\\death counter\\death_counter.txt";
 		public string prebrano;
+		public string direkt;
 		public int deaths;
-
+		public string basepath = Directory.GetCurrentDirectory();
 		public Form1()
 		{
 			InitializeComponent();
 			this.Location = new System.Drawing.Point(5, 5);
-			prebrano = File.ReadAllText(path);
+			string parentPath = basepath;
+			for (int i = 0; i < 3; i++)    
+			{
+				parentPath = Directory.GetParent(parentPath).FullName;
+			}
+			direkt = Path.Combine(parentPath, "death_counter.txt");
+			prebrano = File.ReadAllText(direkt);
 			deaths = int.Parse(prebrano);
 			number.Text = deaths.ToString();
+			Console.WriteLine("curent dir : " +  basepath);
+            Console.WriteLine("base path " + parentPath);
 
-			this.TopMost = true;
+            this.TopMost = true;
 			this.Opacity = 0.75;
 			this.FormBorderStyle = FormBorderStyle.None;
 
@@ -109,7 +117,7 @@ namespace death_counter
 		{
 			deaths++;
 			number.Text = deaths.ToString();
-			File.WriteAllText(path, number.Text);
+			File.WriteAllText(direkt, number.Text);
 		}
 	}
 }
