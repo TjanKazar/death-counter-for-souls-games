@@ -35,21 +35,23 @@
 			// label1
 			// 
 			label1.AutoSize = true;
-			label1.Font = new Font("Showcard Gothic", 36F, FontStyle.Regular, GraphicsUnit.Point, 0);
-			label1.Location = new Point(12, 9);
+			label1.Font = new Font("Bernard MT Condensed", 36F, FontStyle.Regular, GraphicsUnit.Point, 0);
+			label1.ForeColor = SystemColors.ActiveCaptionText;
+			label1.Location = new Point(20, 9);
 			label1.Name = "label1";
-			label1.Size = new Size(207, 60);
+			label1.Size = new Size(162, 57);
 			label1.TabIndex = 0;
-			label1.Text = "Deaths";
+			label1.Text = "DEATHS";
+			label1.Click += label1_Click;
 			// 
 			// number
 			// 
 			number.AutoSize = true;
-			number.Font = new Font("Showcard Gothic", 36F, FontStyle.Regular, GraphicsUnit.Point, 0);
+			number.Font = new Font("Bernard MT Condensed", 36F);
 			number.ForeColor = Color.WhiteSmoke;
-			number.Location = new Point(41, 69);
+			number.Location = new Point(53, 71);
 			number.Name = "number";
-			number.Size = new Size(148, 60);
+			number.Size = new Size(104, 57);
 			number.TabIndex = 3;
 			number.Text = "zero";
 			// 
@@ -58,7 +60,7 @@
 			AutoScaleDimensions = new SizeF(7F, 15F);
 			AutoScaleMode = AutoScaleMode.Font;
 			BackColor = SystemColors.ControlDarkDark;
-			ClientSize = new Size(233, 160);
+			ClientSize = new Size(194, 137);
 			Controls.Add(number);
 			Controls.Add(label1);
 			Name = "Form1";

@@ -8,7 +8,6 @@ namespace death_counter
 {
 	public partial class Form1 : Form
 	{
-		// DLL Imports
 		[DllImport("user32.dll")]
 		private static extern IntPtr SetWindowsHookEx(int idHook, LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
 
@@ -31,7 +30,7 @@ namespace death_counter
 		private const uint SWP_SHOWWINDOW = 0x0040;
 
 		private const int WH_KEYBOARD_LL = 13;
-		private const int WM_KEYUP = 0x0101; 
+		private const int WM_KEYUP = 0x0101;
 
 		private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
 		private LowLevelKeyboardProc _proc;
@@ -43,12 +42,13 @@ namespace death_counter
 		public string direkt;
 		public int deaths;
 		public string basepath = Directory.GetCurrentDirectory();
+
 		public Form1()
 		{
 			InitializeComponent();
-			this.Location = new System.Drawing.Point(5, 5);
+			this.Load += new EventHandler(Form1_Load);
 			string parentPath = basepath;
-			for (int i = 0; i < 3; i++)    
+			for (int i = 0; i < 3; i++)
 			{
 				parentPath = Directory.GetParent(parentPath).FullName;
 			}
@@ -56,10 +56,10 @@ namespace death_counter
 			prebrano = File.ReadAllText(direkt);
 			deaths = int.Parse(prebrano);
 			number.Text = deaths.ToString();
-			Console.WriteLine("curent dir : " +  basepath);
-            Console.WriteLine("base path " + parentPath);
+			Console.WriteLine("current dir : " + basepath);
+			Console.WriteLine("base path " + parentPath);
 
-            this.TopMost = true;
+			this.TopMost = true;
 			this.Opacity = 0.75;
 			this.FormBorderStyle = FormBorderStyle.None;
 
@@ -69,9 +69,20 @@ namespace death_counter
 			_hookID = SetHook(_proc);
 
 			topmostTimer = new System.Windows.Forms.Timer();
-			topmostTimer.Interval = 1000; 
+			topmostTimer.Interval = 1000;
 			topmostTimer.Tick += TopmostTimer_Tick;
 			topmostTimer.Start();
+		}
+
+		private void Form1_Load(object sender, EventArgs e)
+		{
+			// Determine the position to place the form in the top right corner
+			int screenWidth = Screen.PrimaryScreen.WorkingArea.Width;
+			int screenHeight = Screen.PrimaryScreen.WorkingArea.Height;
+			int formWidth = this.Width;
+			int formHeight = this.Height;
+
+			this.Location = new System.Drawing.Point(screenWidth - formWidth - 10, 10); // 10 pixels padding from right and top
 		}
 
 		private void TopmostTimer_Tick(object sender, EventArgs e)
@@ -90,10 +101,10 @@ namespace death_counter
 
 		private IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
 		{
-			if (nCode >= 0 && wParam == (IntPtr)WM_KEYUP) 
+			if (nCode >= 0 && wParam == (IntPtr)WM_KEYUP)
 			{
 				int vkCode = Marshal.ReadInt32(lParam);
-				if (vkCode == 0x20) 
+				if (vkCode == 0x20)
 				{
 					IncrementDeathCounter();
 				}
@@ -118,6 +129,11 @@ namespace death_counter
 			deaths++;
 			number.Text = deaths.ToString();
 			File.WriteAllText(direkt, number.Text);
+		}
+
+		private void label1_Click(object sender, EventArgs e)
+		{
+
 		}
 	}
 }
