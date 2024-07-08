@@ -39,13 +39,18 @@ namespace death_counter
 		private System.Windows.Forms.Timer topmostTimer;
 
 		public string prebrano;
+		public string prebranoRadahn;
 		public string direkt;
+		public string direktRadahn;
 		public int deaths;
+		public int deathsRadahn;
 		public string basepath = Directory.GetCurrentDirectory();
+		public bool RMode;
 
 		public Form1()
 		{
 			InitializeComponent();
+			RMode = true;
 			this.Load += new EventHandler(Form1_Load);
 			string parentPath = basepath;
 			for (int i = 0; i < 3; i++)
@@ -53,9 +58,15 @@ namespace death_counter
 				parentPath = Directory.GetParent(parentPath).FullName;
 			}
 			direkt = Path.Combine(parentPath, "death_counter.txt");
+			direktRadahn = Path.Combine(parentPath, "death_counter_radahn.txt");
 			prebrano = File.ReadAllText(direkt);
+			prebranoRadahn = File.ReadAllText(direktRadahn);
 			deaths = int.Parse(prebrano);
+			deathsRadahn = int.Parse(prebranoRadahn);
+
+
 			number.Text = deaths.ToString();
+			numberRadahn.Text = deathsRadahn.ToString();
 			Console.WriteLine("current dir : " + basepath);
 			Console.WriteLine("base path " + parentPath);
 
@@ -127,13 +138,31 @@ namespace death_counter
 		private void IncrementDeathCounter()
 		{
 			deaths++;
+			if (RMode == true)
+			deathsRadahn++;
 			number.Text = deaths.ToString();
+			numberRadahn.Text = deathsRadahn.ToString();
 			File.WriteAllText(direkt, number.Text);
+			File.WriteAllText(direktRadahn, numberRadahn.Text);
 		}
 
 		private void label1_Click(object sender, EventArgs e)
 		{
 
+		}
+
+		private void radahnMode_Click(object sender, EventArgs e)
+		{
+			if (RMode == false)
+			{
+				RMode = true;
+			radahnMode.BackColor = Color.PaleGreen;
+			}
+			else
+			{
+				RMode = false;
+			radahnMode.BackColor= Color.Salmon;
+			}
 		}
 	}
 }
